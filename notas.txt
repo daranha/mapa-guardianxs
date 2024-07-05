@@ -1,0 +1,8 @@
+CAPAS:
+    - Global water watch
+        - cuantifica contaminación fecal y su evolución
+        - registro: monitores, fecha, nombre (como 10 atributos)
+            -sólo queremos: nombre arroyo, número de unidades, fecha 
+    
+
+PUNTOS: 
