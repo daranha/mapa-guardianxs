@@ -10,15 +10,45 @@ var osm = new L.TileLayer(osmUrl, {
 });
 osm.addTo(demoMap);
 
+ // Satelite Layer
+ googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+  });
+ googleSat.addTo(demoMap);
 
 
-// var markerCluster = L.markerClusterGroup();
+/*===================================================
+                      GEOJSON               
+===================================================*/
 
-// for (var i = 0; i < locations.length; i++) {
-//     var marker = L.marker(locations[i])
-//     marker.bindPopup('<p>Latitud:'+locations[i][0]+'</p><p>Longitud:'+locations[i][1]+'</p>');
-//     markerCluster.addLayer(marker);
-// }
+var capa_OE = L.geoJSON(capa_moe).addTo(demoMap);
+var capa_GWW = L.geoJSON(blitz_gww).addTo(demoMap);
 
-// demoMap.addLayer(markerCluster);
 
+/*===================================================
+                      LAYER CONTROL               
+===================================================*/
+
+var baseLayers = {
+    "Satellite":googleSat,
+    // "Google Map":googleStreets,
+    // "Water Color":Stamen_Watercolor,
+    "OpenStreetMap": osm,
+};
+
+var overlays = {
+    "Ordenamiento Territorial": capa_OE,
+    "Global Water Watch": capa_GWW,
+    // "LineData":linedata,
+    // "PolygonData":polygondata
+};
+
+L.control.layers(baseLayers, overlays).addTo(demoMap);
+
+
+/*===================================================
+                      SEARCH BUTTON               
+===================================================*/
+
+// L.Control.geocoder().addTo(demoMap);
