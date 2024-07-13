@@ -1,5 +1,5 @@
 CAPAS:
-    
+
     - Global water watch
         - cuantifica contaminación fecal y su evolución
         - registro: monitores, fecha, nombre (como 10 atributos)
@@ -12,3 +12,10 @@ CAPAS:
 
 
 PUNTOS: 
+
+
+
+INFO: 
+
+    https://www.youtube.com/watch?v=nDS0WOeE4OU
+    
