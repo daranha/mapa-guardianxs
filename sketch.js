@@ -27,22 +27,22 @@ osm.addTo(demoMap);
     
     // Google Map Layer
     
-    googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
-        maxZoom: 20,
-        subdomains:['mt0','mt1','mt2','mt3']
-     });
-     googleStreets.addTo(demoMap);
+    // googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+    //     maxZoom: 20,
+    //     subdomains:['mt0','mt1','mt2','mt3']
+    //  });
+    //  googleStreets.addTo(demoMap);
     
     
     
-    var Stamen_Watercolor = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
-     attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    subdomains: 'abcd',
-    minZoom: 1,
-    maxZoom: 16,
-    ext: 'jpg'
-    });
-    Stamen_Watercolor.addTo(demoMap);
+    // var Stamen_Watercolor = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
+    //  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    // subdomains: 'abcd',
+    // minZoom: 1,
+    // maxZoom: 16,
+    // ext: 'jpg'
+    // });
+    // Stamen_Watercolor.addTo(demoMap);
 
 
 
@@ -68,17 +68,21 @@ var capa_GWW = L.geoJSON(blitz_gww, {
 
 // var capa_OE = L.geoJSON(capa_moe).addTo(demoMap);
 
-var capa_OE = new L.geoJSON(capa_moe, {
-    onEachFeature: function(feature,layer){
-        layer.bindPopup('<b>status: </b>' + feature.properties.POL_GEN);
-    },
-    // icon:{
-    //     fillColor: 'red',
-    //     fillOpacity:1,
-    //     color: 'green'
-    // }
-}).addTo(demoMap);
+// var capa_OE = new L.geoJSON(capa_moe, {
+//     onEachFeature: function(feature,layer){
+//         layer.bindPopup('<b>status: </b>' + feature.properties.POL_GEN);
+//     },
+//     // icon:{
+//     //     fillColor: 'red',
+//     //     fillOpacity:1,
+//     //     color: 'green'
+//     // }
+// }).addTo(demoMap);
 
+var capa_OE = L.geoJson(capa_moe, {
+    style: style,
+    onEachFeature: onEachFeature
+}).addTo(demoMap);
 
 /*===================================================
                       LAYER CONTROL               
@@ -86,8 +90,8 @@ var capa_OE = new L.geoJSON(capa_moe, {
 
 var baseLayers = {
     "Satélite":googleSat,
-    "Google Map":googleStreets,
-    "Oscuro": CartoDB_DarkMatter,
+    // "Google Map":googleStreets,
+    // "Oscuro": CartoDB_DarkMatter,
     "OpenStreetMap": osm,
 };
 
@@ -113,12 +117,7 @@ L.control.layers(baseLayers, overlays).addTo(demoMap);
         INTENTO INTERACTIVIDAD OET
 ===================================================*/
 
-// L.geoJSON(blitz_gww, pointToLayer).addTo(demoMap);
-
-        
-
-
-L.geoJson(capa_moe).addTo(demoMap);
+      
 
 function categoriaColor(d) {
     console.log(d);
@@ -131,35 +130,52 @@ function categoriaColor(d) {
 }
 
 
-// function categoriaColor(d) {
-//     console.log(d);
-//     return d === 'Apta para beber y uso recreativo'  ? '#E31A1C' :
-//            d === 'no apta para potabilización y peligrosa para uso recreativo'  ? '#FC4E2A' :
-//            d === 'peligrosa'   ? '#FD8D3C' :
-//            d === 'posible riesgo'   ? '#FEB24C' :
-//            d === 'segura'  ? '#FED976' :
-//                  '#FFEDA0';
-// }
-// {'Apta para beber y uso recreativo',
-//  'no apta para potabilización y peligrosa para uso recreativo',
-//  'peligrosa',
-//  'posible riesgo',
-//  'segura'}
-
-
-L.geoJson(capa_moe).addTo(demoMap);
-
 function getColor(d) {
     console.log(d);
-    return d < 100 ? '#800026' :
-           d < 50  ? '#BD0026' :
-           d < 20  ? '#E31A1C' :
-           d < 10  ? '#FC4E2A' :
-           d < 5   ? '#FD8D3C' :
-           d < 2   ? '#FEB24C' :
-           d < 1   ? '#FED976' :
-                      '#FFEDA0';
+    return  d.includes('URBAN') ? 'grey' :
+            d.includes('APROVE') ? 'yellow' :
+            d.includes('CONSER') ? 'green' :
+            d.includes('RESTAU') ? 'blue' :
+    //        d.includes(substring) ? 'violet' :
+    //        d.includes(substring) ? 'red' :
+           'white';
 }
+
+/// 
+
+// 'CONSER' OR 'RESTA' ? Verdosas
+// 'APROVECHA' ? 'yellow'
+// 'URBAN' ? 'grey'
+
+/// Verdosas las categorías de conservación y restauración. 
+// Amarillos a las zonas agrícolas. 
+// Gris la zona urbanizada.
+
+//    OPCIONES 
+
+//    {'APROVECHAMIENTO SUSTENTABLE',
+//    'APROVECHAMIENTO SUSTENTABLE-CONSERVACION',
+//    'APROVECHAMIENTO SUSTENTABLE-RESTAURACION',
+//    'CONSERVACION',
+//    'CONSERVACION-APROVECHAMIENTO SUSTENTABLE',
+//    'CONSERVACION-RESTAURACION',
+//    'ENP CON PROGRAMA DE MANEJO',
+//    'ENP SIN PROGRAMA DE MANEJO',
+//    'PRESERVACION',
+//    'PRESERVACION-APROVECHAMIENTO SUSTENTABLE',
+//    'PRESERVACION-CONSERVACION',
+//    'PRESERVACION-RESTAURACION',
+//    'RESTAURACION',
+//    'RESTAURACION-APROVECHAMIENTO SUSTENTABLE',
+//    'RESTAURACION-CONSERVACION',
+//    'RESTAURACION-PRESERVACION',
+//    'SIN INSTRUMENTO DE PLANEACION URBANA ACTUAL',
+//    'SUJETO A INSTRUMENTO DE PLANEACION URBANA',
+//    'SUJETO A INSTRUMENTO DE PLANEACIÓN URBANA'}
+
+
+
+
 
 function style(feature) {
     return {
@@ -168,12 +184,9 @@ function style(feature) {
         opacity: 1,
         color: 'white',
         dashArray: '3',
-        fillOpacity: 0.7
+        fillOpacity: 0.5
     };
 }
-
-new L.geoJson(capa_moe, {style: style}).addTo(demoMap);
-
 
 
 
@@ -181,10 +194,10 @@ function highlightFeature(e) {
     var layer = e.target;
 
     layer.setStyle({
-        weight: 5,
-        color: '#666',
+        weight: 4,
+        color: 'cyan', // getColor(layer.properties.POL_GEN),
         dashArray: '',
-        fillOpacity: 0.7
+        fillOpacity: 0.8
     });
 
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -201,13 +214,13 @@ function resetHighlight(e) {
 
 var geojson;
 // ... our listeners
-geojson = L.geoJson(capa_moe);
 
 function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
 }
 
 function onEachFeature(feature, layer) {
+    layer.bindPopup('<b>status: </b>' + feature.properties.POL_GEN);
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
@@ -218,7 +231,7 @@ function onEachFeature(feature, layer) {
 geojson = L.geoJson(capa_moe, {
     style: style,
     onEachFeature: onEachFeature
-}).addTo(demoMap);
+})
 
 var info = L.control();
 
@@ -231,8 +244,8 @@ info.onAdd = function (demoMap) {
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
     this._div.innerHTML = '<h4>Mapa Guardianxs</h4>' +  (props ?
-        '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-        : 'usa el mouse para explorar' );
+        '<b>' + props.POL_GEN + '</b><br />'+ 'Sup_ha: ' + props.Sup_ha
+        : 'Usa el mouse para explorar, doble click para hacer zoom.' );
 };
 
 info.addTo(demoMap);
