@@ -1,7 +1,8 @@
 # Pasos para integrar un mapa con Leaflet que se vea en Drupal
  
-Los mapas se hacen con Leaflet, que es una libreria en javascript para hacer y mostrar mapas en internet.
-¿Cómo se integran a Drupal estos mapas? Estos mapas se colocan cada uno en una pagina de Drupal llamando las dependencias de ese mapa en el tema, pero nunca tocando la base de datos de Drupal.
+A continuación se muestran cada uno de los pasos para lograr visualizar un mapa hecho con Leaflet. 
+El resumen de los pasos a seguir es: primero tener un mapa ya desarrollado, despues crear un nodo en Drupal en el sitio de riiaver.org, despues editar el archivo asamblea.libraries.yml para agregar dependencias dentro del tema asamblea. despues crear un template twig con el nombre del nodo creado y despues subir los archivos que se agregaron al tema del sitio en linea.
+A continuación se explica cada paso:
 
 
  
@@ -10,21 +11,21 @@ Los mapas se hacen con Leaflet, que es una libreria en javascript para hacer y m
 Lo componen tres archivos
 
 **leaflet.js**
-Que es el archivo que crea los mapas.
+El archivo que crea los mapas.
 
 **script.js**
-Este archvio es donde se trabaja todo lo que se le vaya a añadir de funcionalidad a el mapa, este es el archvio donde se trabaja. No tiene que llamarse exactamente asi, pede irse llamando segun el proyectod de mapa.
+Este archivo es donde se trabaja todo lo que se le vaya a añadir de funcionalidad a el mapa. No tiene que llamarse exactamente asi, puede irse llamando segun el proyecto de mapa.
 
 **leaflet.css**
-Este archvio CSS es para tener algunos esilos definidos que ya trae leaflet. no se le hacen modficiaciones, solo se agrega como dependencia.
+Este archvio CSS es para tener algunos estilos definidos que ya trae leaflet. no se le hacen modficiaciones, solo se agrega como dependencia.
 
 Existen otros archivos que se agregan, para el proyecto que se va a realizar seguramente existiran archivos **geojson** para los datos geograficos y el archivo leaflet.js necesita un archivo **leaflet.js.map** También se cargan algunas imágenes para mostrar marcadores en los mapas.
 La ubicación de todos estos archivos se indican más adelante en la sección de dependencias.
  
  
 ## 1- Crear un nodo
-Con el tipo de contenido Landmarks, para subir un mapa nuevo se crea un nuevo nodo en drupal (una nueva pagina) con el titulo del mapa y una descripción del mismo.
-Al crea el nodo se le da un nombre con un numero, para ejemplo pondrems el nombre de : https://riaaver.org/node/1091
+Una vez que se tenga el mapa en leafleft se crea un nodo (una nueva pagina)  del tipo de contenido mapa. Este nodo debe tener el titulo del mapa y una descripción del mismo, esots son los unicos datos que se agregan a Drupal.
+Al crea el nodo, Drupal le asigna un numero a ese nodo por ejemplo pondremos el nombre de : https://riaaver.org/node/1091
 
 Se toma ese numero 1091 y se crea en el tema un archivo que se llevara ese numero en el nombre (node--1091.html.twig). Más adelante lo explicaremos en el paso 3.
 
@@ -43,21 +44,20 @@ custom_mapa: <br>
     
 El primer nombre, en la primera linea puede ser el que se desee, solo no se puede acentos o palabras separadas.
 
-Con este código indicamos que dentro del tema en la carpeta js se va a colocar un archivo llamado   script.js este archivo, igual puede nombrar como se desee, podria tener por ejmplo el nombre del mapa.
-Si se requiere más de un archivo js se agrega en esta lista que son archivo que solo se usaran en esta regla.
+Con este código indicamos que dentro del tema en la carpeta **js** se va a colocar un archivo llamado **script.js**. este archivo puede nombrarse como se desee, podria tener por ejemplo el nombre del mapa.
+Si se requiere más de un archivo javascript se agrega en esta lista. Estos archivos solo se usaran en esta regla.
 
-En el archivo asamblea.libraries.yml en la parte de arriba de manera más general ya se agregan 
+En el archivo **asamblea.libraries.yml** en la parte de arriba de manera más general se agregan 
 
 **js/leaflet.js: {}
 js/leaflet.js.map: {}**
     
-Se tiene que evaluar si se dejan asi o si se cargar pagina por pagina.   
 
- 
+
  
 ## 3- Crear un template con twig
  
-El sitio de riaaver tiene un tema que se llama asamblea. Ese tema es el que permite mostras un diseño en el sitio web. 
+El sitio de riaaver tiene un tema que se llama **asamblea**. Ese tema es el que permite monstrar un diseño en el sitio web. 
 Si se entra por SSH o por FTP el tema se encuentra en esta dirección:
 
 `/web/themes/contrib/asamblea/`
@@ -68,11 +68,11 @@ Dentro de ese tema existe una carpeta donde estan los templates que usa el sitio
 
 `/web/themes/contrib/asamblea/templates/content/`
 
-Los tempaltes están escritos en un lenguaj que se llama twig y que es parecido al html y sirve para crear toda la estructura de cad tipo de pagina que muestra el sitio
+Los templates están escritos en un lenguaje que se llama twig y que es parecido al html y sirve para crear toda la estructura de cada tipo de pagina que muestra el sitio
 
 ya en la ruta `/web/themes/contrib/asamblea/templates/content/` <br>
 vamos a tomar un template que se llama **node--numeronodo.html.twig**  <br>
-y lo vamos a copiar y renonbrar a: **node--1091.html.twig**
+y lo vamos a copiar y renombrar a: **node--1091.html.twig**
 
 lo que hace ese template es aplicar las instrucciones que tiene adentro solo al nodo  **1091**, cuando queramos hacer un nuevo mapa solo tenemos que repetir el paso poniendo el numero del nodo creado.
 
